@@ -13,6 +13,10 @@ module RSpreedlyCore
       def [](key)
         self.configuration[key]
       end
+      def []=(key, value)
+        self.configuration[key] = value
+      end
+
     end
   end
 end

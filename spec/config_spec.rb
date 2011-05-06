@@ -11,4 +11,11 @@ describe RSpreedlyCore::Config do
       RSpreedlyCore::Config[:api_login].should == 'site_api_login'
     end
   end
+
+  describe "[]=" do
+    it "sets configurations" do
+      RSpreedlyCore::Config[:api_login] = 'foo'
+      RSpreedlyCore::Config[:api_login].should == 'foo'
+    end
+  end
 end

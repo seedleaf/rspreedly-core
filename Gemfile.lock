@@ -1,16 +1,17 @@
+PATH
+  remote: .
+  specs:
+    rspreedly-core (0.0.1)
+      httparty (= 0.7.7)
+
 GEM
   remote: http://rubygems.org/
   specs:
     columnize (0.3.2)
     crack (0.1.8)
     diff-lcs (1.1.2)
-    git (1.2.5)
     httparty (0.7.7)
       crack (= 0.1.8)
-    jeweler (1.6.0)
-      bundler (~> 1.0.0)
-      git (>= 1.2.5)
-      rake
     linecache (0.43)
     mocha (0.9.12)
     rake (0.8.7)
@@ -33,10 +34,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.0.0)
-  httparty
-  jeweler (~> 1.6.0)
-  mocha
-  rcov
+  bundler (~> 1.0.10)
+  mocha (~> 0.9.12)
+  rake
+  rcov (~> 0.9.9)
   rspec (~> 2.3.0)
-  ruby-debug
+  rspreedly-core!
+  ruby-debug (~> 0.10.4)

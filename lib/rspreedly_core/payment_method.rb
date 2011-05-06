@@ -1,6 +1,7 @@
 module RSpreedlyCore
 
   class TokenNotFound < StandardError; nil; end
+  class InvalidCredentials < StandardError; nil; end
 
   class PaymentMethod
 
@@ -12,12 +13,26 @@ module RSpreedlyCore
     attr_reader :errors, :response
 
     def initialize(token)
-      @response = Request.new(token)
-      if @response.attributes
-        self.attributes = @response.attributes
+      @response = Request.new(token).response
+      @payment_method_attributes = @response["payment_method"]
+
+      if @payment_method_attributes
+        self.attributes = @payment_method_attributes
       end
+
       set_errors
     end
+
+    def attributes
+      attrs = {}
+      API_ATTRIBUTES.each do |attr|
+        attrs[attr.to_s] = self.send(attr)
+      end
+      attrs["errors"] = @errors
+      attrs
+    end
+
+    private
 
     def attributes=(attrs)
       attrs.each do |k, v|
@@ -27,7 +42,7 @@ module RSpreedlyCore
 
     def set_errors
       @errors = []
-      existing_errors = @response.attributes["errors"]
+      existing_errors = @payment_method_attributes["errors"]
       if existing_errors
         errors = existing_errors["error"]
         if errors.is_a?(Array)
@@ -42,7 +57,10 @@ module RSpreedlyCore
 
     def set_error(error)
       attributes = error.attributes
-      @errors << { attributes['attribute'] => { 'key' => attributes['key'], 'message' => error}}
+      @errors << { attributes['attribute'] => {
+        'key' => attributes['key'], 'message' => error
+        }
+      }
     end
   end
 
@@ -51,24 +69,30 @@ module RSpreedlyCore
     format :xml
     base_uri "https://spreedlycore.com/v1"
 
-
     attr_reader :response, :attributes
 
     def initialize(token)
-      @response = do_request(token)
-      @attributes = @response["payment_method"]
+      do_request(token)
     end
 
+    private
     def do_request(token)
       options = {
-        :basic_auth => {:username => RSpreedlyCore::Config[:api_login],
-                        :password => RSpreedlyCore::Config[:api_secret]},
-        :headers    => {"Content-Type" => 'application/xml'}
+        :basic_auth => {
+          :username => RSpreedlyCore::Config[:api_login],
+          :password => RSpreedlyCore::Config[:api_secret]},
+          :headers  => {
+            "Content-Type" => 'application/xml'
+          }
       }
 
-      response = self.class.get("/payment_methods/#{token}.xml",options)
-      raise RSpreedlyCore::TokenNotFound if response.code == 404
-      response
+      @response = self.class.get("/payment_methods/#{token}.xml",options)
+      handle_response_errors
+    end
+
+    def handle_response_errors
+      raise RSpreedlyCore::InvalidCredentials if @response.code == 401
+      raise RSpreedlyCore::TokenNotFound if @response.code == 404
     end
   end
 end
