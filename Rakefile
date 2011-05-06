@@ -28,7 +28,13 @@ Jeweler::RubygemsDotOrgTasks.new
 require 'rspec/core'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = FileList['spec/**/*_spec.rb']
+  spec.pattern = FileList['spec/**/*_spec.rb'].exclude('spec/integration/*')
+end
+
+
+RSpec::Core::RakeTask.new('spec:integration') do |spec|
+  desc 'Run the integration examples'
+  spec.pattern = FileList['spec/integration/*_spec.rb']
 end
 
 RSpec::Core::RakeTask.new(:rcov) do |spec|

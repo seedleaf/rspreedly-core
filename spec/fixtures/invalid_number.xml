@@ -1,0 +1,26 @@
+<payment_method>
+  <token>IkXxZXfxdEfKuAWiuxgidHCi2q2</token>
+  <created_at type="datetime">2011-05-06T14:17:50Z</created_at>
+  <updated_at type="datetime">2011-05-06T14:17:50Z</updated_at>
+  <last_four_digits>2010</last_four_digits>
+  <card_type>visa</card_type>
+  <first_name>Joe</first_name>
+  <last_name>Member</last_name>
+  <month type="integer">1</month>
+  <year type="integer">2012</year>
+  <email>joe@member.com</email>
+  <address1>123 test lane</address1>
+  <address2>Apartment Z</address2>
+  <city>Floyd</city>
+  <state>VA</state>
+  <zip>90210</zip>
+  <country>USA</country>
+  <phone_number>555-555-5555</phone_number>
+  <data nil="true"></data>
+  <payment_method_type>CreditCard</payment_method_type>
+  <verification_value>XXX</verification_value>
+  <number>XXXX-XXXX-XXXX-2010</number>
+  <errors>
+    <error attribute="number" key="errors.invalid">Number is invalid</error>
+  </errors>
+</payment_method>
