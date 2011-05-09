@@ -14,7 +14,7 @@ module FakeHttp
 
   def stub_http_response(opts={})
     http_response = mock('response')
-    http_response.expects(:[])
+    http_response.stubs(:[])
 
     http_response.stubs(:body).returns(opts[:body] || "")
     http_response.stubs(:message).returns("")
