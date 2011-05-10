@@ -40,6 +40,12 @@ describe RSpreedlyCore::Transaction do
       RSpreedlyCore::Request.expects(:new).with(:put, path).returns(request)
       RSpreedlyCore::Transaction.retain(token)
     end
+  end
 
+  describe '#attributes' do
+    it 'returns a hash of attributes' do
+      trans = RSpreedlyCore::Transaction.new(:token => 'foo')
+      trans.attributes['token'].should == 'foo'
+    end
   end
 end

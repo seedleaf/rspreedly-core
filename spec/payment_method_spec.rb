@@ -6,6 +6,7 @@ describe RSpreedlyCore::PaymentMethod do
     it "requires a token" do
       expect { RSpreedlyCore::PaymentMethod.validate() }.to raise_error(ArgumentError)
     end
+
     context "attributes" do
       before do
         stub_http_with_fixture('valid_payment_method.xml')
@@ -60,7 +61,6 @@ describe RSpreedlyCore::PaymentMethod do
   end
 
   describe "#retain" do
-
     it "creates a transaction of type 'retain'" do
       stub_http_with_fixture('valid_payment_method.xml')
       payment_method = RSpreedlyCore::PaymentMethod.validate("123")
@@ -69,4 +69,20 @@ describe RSpreedlyCore::PaymentMethod do
     end
   end
 
+  describe ".retain" do
+    it "creates a transaction of type 'retain' for a given token" do
+      stub_http_with_fixture('valid_payment_method.xml')
+      payment_method = RSpreedlyCore::PaymentMethod.validate("123")
+      RSpreedlyCore::Transaction.expects(:retain).with(payment_method.token)
+      RSpreedlyCore::PaymentMethod.retain(payment_method.token)
+    end
+  end
+
+  describe "#attributes" do
+    it "returns a hash of attributes" do
+      stub_http_with_fixture('valid_payment_method.xml')
+      payment_method = RSpreedlyCore::PaymentMethod.new({:token => 'bar'})
+      payment_method.attributes['token'].should == 'bar'
+    end
+  end
 end

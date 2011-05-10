@@ -3,11 +3,12 @@ module RSpreedlyCore
   class TokenNotFound < StandardError; nil; end
   class InvalidCredentials < StandardError; nil; end
 
-  class PaymentMethod < Base
-
+  class PaymentMethod
     API_ATTRIBUTES = [:token, :number, :verification_value, :month, :year,
       :first_name, :last_name, :card_type, :address1,
       :address2, :city, :state, :zip, :country, :phone_number, :email ]
+
+    include Base
 
     attr_reader :errors, :response
 
@@ -21,8 +22,14 @@ module RSpreedlyCore
       RSpreedlyCore::Transaction.retain(token)
     end
 
+    def self.retain(token)
+      RSpreedlyCore::Transaction.retain(token)
+    end
+
     def attributes
-      super { |attrs| attrs["errors"] = @errors }
+      get_attributes(self.class) do |attributes|
+        attributes["errors"] = @errors
+      end
     end
 
     private

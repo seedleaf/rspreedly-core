@@ -1,23 +1,33 @@
 module RSpreedlyCore
-  class Base
-
+  module Base
     API_ATTRIBUTES = []
-    attr_accessor *API_ATTRIBUTES
+    def self.included(kls)
+      unless kls.const_defined?(:API_ATTRIBUTES)
+        raise "must define API_ATTRIBUTES before including"
+      end
+      kls.class_eval do
+        attr_accessor *kls::API_ATTRIBUTES
+
+        define_method :attributes do
+          get_attributes(kls)
+        end
+      end
+    end
 
     def initialize(attributes)
       self.attributes = attributes
     end
 
-    def attributes
+    private
+
+    def get_attributes(kls=nil)
       attrs = {}
-      API_ATTRIBUTES.each do |attr|
+      kls::API_ATTRIBUTES.each do |attr|
         attrs[attr.to_s] = self.send(attr)
       end
-      yield attrs
+      yield attrs if block_given?
       attrs
     end
-
-    private
 
     def attributes=(attrs = {})
       attrs.each do |k, v|
