@@ -7,7 +7,7 @@ describe "Api Requests" do
       @payment_method = RSpreedlyCore::PaymentMethod.validate(@token)
     end
 
-    RSpreedlyCore::PaymentMethod::API_ATTRIBUTES.each do |attribute|
+    RSpreedlyCore::PaymentMethod.api_attributes.each do |attribute|
       it "#{attribute} is populated" do
         @payment_method.send(attribute).should_not be nil
       end

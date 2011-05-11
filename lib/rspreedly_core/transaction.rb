@@ -1,8 +1,8 @@
 module RSpreedlyCore
   class Transaction
-    API_ATTRIBUTES = [:token, :transaction_key, :succeeded, :transaction_type]
-
     include Base
+
+    api_attributes :token, :transaction_key, :succeeded, :transaction_type
 
     def self.retain(token)
       request = Request.new(:put, "/payment_methods/#{token}/retain.xml")

@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'pp'
 
 describe RSpreedlyCore::PaymentMethod do
+
   describe ".validate" do
     it "requires a token" do
       expect { RSpreedlyCore::PaymentMethod.validate() }.to raise_error(ArgumentError)
@@ -14,7 +15,7 @@ describe RSpreedlyCore::PaymentMethod do
 
       subject { RSpreedlyCore::PaymentMethod.validate("123") }
 
-      it { should respond_to(*RSpreedlyCore::PaymentMethod::API_ATTRIBUTES) }
+      it { should respond_to(*RSpreedlyCore::PaymentMethod.api_attributes) }
     end
 
     context "with a valid token" do
@@ -25,7 +26,7 @@ describe RSpreedlyCore::PaymentMethod do
       subject { RSpreedlyCore::PaymentMethod.validate('123') }
 
       context "Api attributes" do
-        RSpreedlyCore::PaymentMethod::API_ATTRIBUTES.each do |attribute|
+        RSpreedlyCore::PaymentMethod.api_attributes.each do |attribute|
           it "#{attribute} is populated" do
             subject.send(attribute).should_not be nil
           end

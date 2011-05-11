@@ -4,11 +4,11 @@ module RSpreedlyCore
   class InvalidCredentials < StandardError; nil; end
 
   class PaymentMethod
-    API_ATTRIBUTES = [:token, :number, :verification_value, :month, :year,
-      :first_name, :last_name, :card_type, :address1,
-      :address2, :city, :state, :zip, :country, :phone_number, :email ]
-
     include Base
+
+    api_attributes :token, :number, :verification_value, :month, :year,
+      :first_name, :last_name, :card_type, :address1,
+      :address2, :city, :state, :zip, :country, :phone_number, :email
 
     attr_reader :errors, :response
 
@@ -27,7 +27,7 @@ module RSpreedlyCore
     end
 
     def attributes
-      get_attributes(self.class) do |attributes|
+      super do |attributes|
         attributes["errors"] = @errors
       end
     end
