@@ -2,11 +2,13 @@ PATH
   remote: .
   specs:
     rspreedly-core (0.0.1)
+      builder (>= 3.0.0)
       httparty (= 0.7.7)
 
 GEM
   remote: http://rubygems.org/
   specs:
+    builder (3.0.0)
     columnize (0.3.2)
     crack (0.1.8)
     diff-lcs (1.1.2)

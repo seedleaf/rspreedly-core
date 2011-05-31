@@ -1,8 +1,5 @@
 module RSpreedlyCore
 
-  class TokenNotFound < StandardError; nil; end
-  class InvalidCredentials < StandardError; nil; end
-
   class PaymentMethod
     include Base
 
@@ -19,12 +16,33 @@ module RSpreedlyCore
     end
 
     def retain
-      RSpreedlyCore::Transaction.retain(token)
+      self.class.retain(token)
     end
 
     def self.retain(token)
-      RSpreedlyCore::Transaction.retain(token)
+      RSpreedlyCore::Transaction.payment_method_transaction('retain', token)
     end
+    
+    def redact
+      self.class.redact(token)
+    end 
+    
+    def self.redact(token)
+      RSpreedlyCore::Transaction.payment_method_transaction('redact', token)
+    end
+    
+    def purchase(amount)
+      RSpreedlyCore::Transaction.gateway_transaction('purchase', amount, token)
+    end
+    
+    def authorize(amount)
+      RSpreedlyCore::Transaction.gateway_transaction('authorize', amount, token)
+    end
+    
+    def capture(transaction_token, amount = nil)
+      RSpreedlyCore::Transaction.capture_transaction('capture', amount, transaction_token)
+    end
+      
 
     def attributes
       super do |attributes|

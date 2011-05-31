@@ -20,9 +20,72 @@ describe "Api Requests" do
           transaction.should be_success
         end
       end
+    end
+    
+    context "redacting a credit card" do
+      context 'when successful' do
+        it 'returns a successful transaction' do
+          transaction = @payment_method.redact
+          transaction.should be_success
+        end
+      end
+      
+    end
 
+    context "making a purchase" do
+      it 'returns a successful purchase transaction with valid card and amount' do
+        transaction = @payment_method.purchase(100)
+        transaction.transaction_type.should == "purchase"
+        transaction.should be_success
+        transaction.response["message"].should == "Successful purchase!"
+      end
+      
+      it 'fails with negative amounts' do
+        expect { @payment_method.purchase(-100) }.
+          to raise_error(RSpreedlyCore::UnprocessableEntity, "Amount must be greater than 0")
+      end
+    end
+    
+    context "making an authorization" do
+      it 'returns a successful authorization transaction with valid card and amount' do
+        transaction = @payment_method.authorize(100)
+        transaction.transaction_type.should == "authorization"
+        transaction.should be_success
+        transaction.response["message"].should == "Successful authorize!"
+      end
+      
+      it 'fails with negative amounts' do
+        expect { @payment_method.authorize(-100) }.
+          to raise_error(RSpreedlyCore::UnprocessableEntity, "Amount must be greater than 0")
+      end
+    end
+    
+    context "making a capture" do
+      
+      let (:auth_token) {@payment_method.authorize(100).token}
+      
+      it 'returns a successful capture transaction with a good card and full capture' do
+        transaction = @payment_method.capture(auth_token)
+        transaction.transaction_type.should == "capture"
+        transaction.should be_success
+        transaction.response["message"].should == "Successful capture!"
+      end
+      
+      it 'returns a successful capture transaction with a good card and partial capture' do
+        transaction = @payment_method.capture(auth_token, 150)
+        transaction.transaction_type.should == "capture"
+        transaction.should be_success
+        transaction.response["message"].should == "Successful capture!"
+        transaction.amount.should == 50
+      end
+      
+      it 'fails with amounts greater than authorization' do
+        expect { @payment_method.capture(auth_token, 105) }.
+          to raise_error(RSpreedlyCore::UnprocessableEntity, "Amount must be greater than 0")
+      end
     end
   end
+  
 
   context "requesting a payment method without valid credentials" do
     it "raises an invalid credentials error" do

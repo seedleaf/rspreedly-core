@@ -1,0 +1,3 @@
+<errors>
+  <error attribute="amount" key="errors.greater_than" count="0">Amount must be greater than 0</error>
+</errors>

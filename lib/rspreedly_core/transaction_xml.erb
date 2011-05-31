@@ -1,0 +1,5 @@
+<transaction>
+<% xml_tags.each do |key, value| %>
+  <%= "<#{key}>#{value}</#{key}>" %>
+<% end %>
+</transaction>

@@ -65,7 +65,8 @@ describe RSpreedlyCore::PaymentMethod do
     it "creates a transaction of type 'retain'" do
       stub_http_with_fixture('valid_payment_method.xml')
       payment_method = RSpreedlyCore::PaymentMethod.validate("123")
-      RSpreedlyCore::Transaction.expects(:retain).with(payment_method.token)
+      RSpreedlyCore::Transaction.expects(:payment_method_transaction).
+                                 with('retain', payment_method.token)
       payment_method.retain
     end
   end
@@ -74,8 +75,65 @@ describe RSpreedlyCore::PaymentMethod do
     it "creates a transaction of type 'retain' for a given token" do
       stub_http_with_fixture('valid_payment_method.xml')
       payment_method = RSpreedlyCore::PaymentMethod.validate("123")
-      RSpreedlyCore::Transaction.expects(:retain).with(payment_method.token)
+      RSpreedlyCore::Transaction.expects(:payment_method_transaction).
+                                 with('retain', payment_method.token)
       RSpreedlyCore::PaymentMethod.retain(payment_method.token)
+     end
+  end
+  
+  describe "#redact" do
+    it "creates a transaction of type 'retain'" do
+      stub_http_with_fixture('valid_payment_method.xml')
+      payment_method = RSpreedlyCore::PaymentMethod.validate("123")
+      RSpreedlyCore::Transaction.expects(:payment_method_transaction).
+                                 with('redact', payment_method.token)
+      payment_method.redact
+    end
+  end
+
+  describe ".redact" do
+    it "creates a transaction of type 'retain' for a given token" do
+      stub_http_with_fixture('valid_payment_method.xml')
+      payment_method = RSpreedlyCore::PaymentMethod.validate("123")
+      RSpreedlyCore::Transaction.expects(:payment_method_transaction).
+                                 with('redact', payment_method.token)
+      RSpreedlyCore::PaymentMethod.redact(payment_method.token)
+    end
+  end
+  
+  describe "#purchase" do
+    it "creates a transaction of type 'purchase' for a given amount" do
+      stub_http_with_fixture('valid_payment_method.xml')
+      payment_method = RSpreedlyCore::PaymentMethod.validate("123")
+      stub_http_with_fixture('successful_purchase.xml')
+      amount = 100
+      RSpreedlyCore::Transaction.expects(:gateway_transaction).
+                                 with('purchase', amount, payment_method.token)
+      payment_method.purchase(100)
+    end
+  end
+  
+  describe "#authorize" do
+    it "creates a transaction of type 'authorize' for a given amount" do
+      stub_http_with_fixture('valid_payment_method.xml')
+      payment_method = RSpreedlyCore::PaymentMethod.validate("123")
+      stub_http_with_fixture('successful_authorize.xml')
+      amount = 100
+      RSpreedlyCore::Transaction.expects(:gateway_transaction).
+                                 with('authorize', amount, payment_method.token)
+      payment_method.authorize(100)
+    end
+  end
+  
+  describe "#capture" do
+    it "creates a transaction of type 'cpature' for a given authorization" do
+      stub_http_with_fixture('valid_payment_method.xml')
+      payment_method = RSpreedlyCore::PaymentMethod.validate("123")
+      auth_token = "some_token"
+      stub_http_with_fixture('successful_capture.xml')
+      RSpreedlyCore::Transaction.expects(:capture_transaction).
+                                 with('capture', nil, auth_token)
+      payment_method.capture(auth_token)
     end
   end
 

@@ -1,0 +1,49 @@
+<transaction>
+  <amount type="integer">100</amount>
+  <on_test_gateway type="boolean">true</on_test_gateway>
+  <created_at type="datetime">2011-05-31T02:03:31Z</created_at>
+  <updated_at type="datetime">2011-05-31T02:03:31Z</updated_at>
+  <currency_code>USD</currency_code>
+  <succeeded type="boolean">true</succeeded>
+  <token>HUiuZ4gnXhBxvbjkbSHIQd2vgua</token>
+  <message key="messages.transaction_succeeded">Succeeded!</message>
+  <transaction_type>authorization</transaction_type>
+  <gateway_token>RGEJJZBmkAHg79AuhYY5YjHSGFg</gateway_token>
+  <response>
+    <success type="boolean">true</success>
+    <message>Successful authorize!</message>
+    <avs_code nil="true"></avs_code>
+    <avs_message nil="true"></avs_message>
+    <cvv_code nil="true"></cvv_code>
+    <cvv_message nil="true"></cvv_message>
+    <error_code></error_code>
+    <error_detail nil="true"></error_detail>
+    <created_at type="datetime">2011-05-31T02:03:31Z</created_at>
+    <updated_at nil="true"></updated_at>
+  </response>
+  <payment_method>
+    <token>RgFc5wilF7UhFVRCcUonN6raLGZ</token>
+    <created_at type="datetime">2011-05-31T02:03:24Z</created_at>
+    <updated_at type="datetime">2011-05-31T02:03:31Z</updated_at>
+    <last_four_digits>1111</last_four_digits>
+    <card_type>visa</card_type>
+    <first_name>Joe</first_name>
+    <last_name>Member</last_name>
+    <month type="integer">5</month>
+    <year type="integer">2011</year>
+    <email>joe@member.com</email>
+    <address1>123 test lane</address1>
+    <address2>Apartment Z</address2>
+    <city>Floyd</city>
+    <state>VA</state>
+    <zip>90210</zip>
+    <country>USA</country>
+    <phone_number>555-555-5555</phone_number>
+    <data nil="true"></data>
+    <payment_method_type>CreditCard</payment_method_type>
+    <verification_value></verification_value>
+    <number>XXXX-XXXX-XXXX-1111</number>
+    <errors>
+    </errors>
+  </payment_method>
+</transaction>
