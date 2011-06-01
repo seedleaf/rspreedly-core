@@ -1,1 +1,1 @@
-rvm use ree@rspreedly-core
+rvm use ree@rspreedly-core --create
