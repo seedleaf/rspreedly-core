@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     rspreedly-core (0.0.1)
-      builder (>= 3.0.0)
+      builder (~> 3.0.0)
       httparty (= 0.7.7)
 
 GEM
