@@ -1,22 +1,22 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+$:.push File.expand_path('../lib', __FILE__)
 
-require "rspreedly_core/version"
+require 'rspreedly_core/version'
 
 Gem::Specification.new do |s|
-  s.name        = "rspreedly-core"
+  s.name        = 'rspreedly-core'
   s.version     = RspreedlyCore::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Jonathan Greenberg", "Lake Denman"]
-  s.email       = ["greenberg@entryway.net", "lake@entryway.net"]
-  s.homepage    = ""
+  s.authors     = ['Jonathan Greenberg', 'Lake Denman']
+  s.email       = ['greenberg@entryway.net', 'lake@entryway.net']
+  s.homepage    = ''
   s.summary     = %q{Spreedly Core api wrapper written in ruby.}
   s.description = %q{Spreedly Core api wrapper written in ruby.}
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  s.files         = `git ls-files`.split('\n')
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split('\n')
+  s.executables   = `git ls-files -- bin/*`.split('\n').map{ |f| File.basename(f) }
+  s.require_paths = ['lib']
 
   s.add_dependency 'httparty', '0.7.7'
 
