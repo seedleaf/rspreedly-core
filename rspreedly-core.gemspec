@@ -13,9 +13,9 @@ Gem::Specification.new do |s|
   s.summary     = %q{Spreedly Core api wrapper written in ruby.}
   s.description = %q{Spreedly Core api wrapper written in ruby.}
 
-  s.files         = `git ls-files`.split('\n')
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split('\n')
-  s.executables   = `git ls-files -- bin/*`.split('\n').map{ |f| File.basename(f) }
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ['lib']
 
   s.add_dependency 'httparty', '0.7.7'
