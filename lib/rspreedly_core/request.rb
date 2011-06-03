@@ -25,7 +25,6 @@ module RSpreedlyCore
           }, :body => @body
       }
       @response = self.class.send(@method, @path, options)
-      debugger
       handle_response_errors
     end
 

@@ -5,6 +5,18 @@ module RSpreedlyCore
       @api_attributes ||= attrs
     end
   end
+  
+  module XmlSupport
+    def xml_body(xml_tags)
+      return "" if xml_tags == {}
+      template = File.read(File.expand_path(File.dirname(__FILE__) + "/xml_body.erb"))
+      ERB.new(template).result(binding)
+    end
+    
+    def class_name
+      self.to_s.split("::")[1].downcase
+    end
+  end
 
   module InstanceMethods
     def initialize(attributes)
@@ -31,7 +43,7 @@ module RSpreedlyCore
 
   module Base
     def self.included(kls)
-      kls.extend(ApiAttributes)
+      kls.extend(ApiAttributes, XmlSupport)
       kls.send(:include, InstanceMethods)
     end
   end

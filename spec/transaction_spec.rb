@@ -191,7 +191,7 @@ describe RSpreedlyCore::Transaction do
           end
       
           it "returns the partial amount for the capture" do
-            transaction.acmount.keys.should == 50
+            transaction.amount.should == 50
           end
         end
       end

@@ -18,22 +18,16 @@ module RSpreedlyCore
                   :payment_method_token => token,
                   :amount => amount,
                   :currency_code => currency_code}
-      request = Request.new(:post, "/gateways/#{gateway_token}/#{action}.xml", transaction_xml(xml_tags))
+      request = Request.new(:post, "/gateways/#{gateway_token}/#{action}.xml", xml_body(xml_tags))
       response = request.response
       self.new(response["transaction"])
     end
 
     def self.capture_transaction(action, amount, transaction_token, options = {})
-      xml_tags = amount ? {:amount => amount} : nil
-      request = Request.new(:post, "/transactions/#{transaction_token}/#{action}.xml", transaction_xml(xml_tags))
+      xml_tags = amount ? {:amount => amount} : {}
+      request = Request.new(:post, "/transactions/#{transaction_token}/#{action}.xml", xml_body(xml_tags))
       response = request.response
       self.new(response["transaction"])
-    end
-
-    def self.transaction_xml(xml_tags)
-      return "" if xml_tags == {}
-      template = File.read(File.expand_path(File.dirname(__FILE__) + '/transaction_xml.erb'))
-      ERB.new(template).result(binding)
     end
 
     def success?

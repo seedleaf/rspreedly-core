@@ -3,16 +3,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe "Api Requests" do
   context "requesting a valid payment method" do
     before :all do
-      @token = TestPaymentMethod.new.get_token
-      @payment_method = RSpreedlyCore::PaymentMethod.validate(@token)
+      token = TestPaymentMethod.new.get_token
+      @payment_method = RSpreedlyCore::PaymentMethod.validate(token)
     end
-
+  
     RSpreedlyCore::PaymentMethod.api_attributes.each do |attribute|
       it "#{attribute} is populated" do
         @payment_method.send(attribute).should_not be nil
       end
     end
-
+  
     context "retaining a credit card" do
       context 'when successful' do
         it 'returns a successful transaction' do
@@ -29,10 +29,19 @@ describe "Api Requests" do
           transaction.should be_success
         end
       end
-      
     end
+  end
 
+  describe "gateway transactions" do
+    
+    before :all do
+      token = TestPaymentMethod.new.get_token
+      @payment_method = RSpreedlyCore::PaymentMethod.validate(token)
+      @payment_method.retain
+    end
+    
     context "making a purchase" do
+       
       it 'returns a successful purchase transaction with valid card and amount' do
         transaction = @payment_method.purchase(100)
         transaction.transaction_type.should == "purchase"
@@ -72,25 +81,40 @@ describe "Api Requests" do
       end
       
       it 'returns a successful capture transaction with a good card and partial capture' do
-        transaction = @payment_method.capture(auth_token, 150)
+        transaction = @payment_method.capture(auth_token, 50)
         transaction.transaction_type.should == "capture"
         transaction.should be_success
         transaction.response["message"].should == "Successful capture!"
         transaction.amount.should == 50
       end
       
-      it 'fails with amounts greater than authorization' do
-        expect { @payment_method.capture(auth_token, 105) }.
+      it 'fails with negative amounts' do
+        expect { @payment_method.capture(auth_token, -150) }.
           to raise_error(RSpreedlyCore::UnprocessableEntity, "Amount must be greater than 0")
       end
     end
   end
   
-
+  describe "Managing Gateways" do
+    describe "adding a test gateway" do
+      it "returns gateway token when successful" do
+        gateway = RSpreedlyCore::Gateway.add("test")
+        gateway.token.should_not be nil
+      end
+    end
+  end
+  
   context "requesting a payment method without valid credentials" do
+    before do
+      @api_secret = RSpreedlyCore::Config[:api_secret]
+    end
     it "raises an invalid credentials error" do
       RSpreedlyCore::Config[:api_secret] = nil
       expect { RSpreedlyCore::PaymentMethod.validate('xyz') }.to raise_error(RSpreedlyCore::InvalidCredentials)
     end
+    after do
+      RSpreedlyCore::Config[:api_secret] = @api_secret
+    end
   end
+  
 end

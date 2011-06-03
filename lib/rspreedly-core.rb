@@ -1,0 +1,1 @@
+require 'rspreedly_core'

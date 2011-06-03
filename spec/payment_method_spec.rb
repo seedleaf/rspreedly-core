@@ -113,6 +113,17 @@ describe RSpreedlyCore::PaymentMethod do
     end
   end
   
+  describe ".purchase" do
+    it "creates a transaction of type 'purchase' for a given amount" do
+      token = "some_token"
+      stub_http_with_fixture('successful_purchase.xml')
+      amount = 100
+      RSpreedlyCore::Transaction.expects(:gateway_transaction).
+                                 with('purchase', amount, token)
+      RSpreedlyCore::PaymentMethod.purchase(100, token)
+    end
+  end
+  
   describe "#authorize" do
     it "creates a transaction of type 'authorize' for a given amount" do
       stub_http_with_fixture('valid_payment_method.xml')
@@ -125,6 +136,17 @@ describe RSpreedlyCore::PaymentMethod do
     end
   end
   
+  describe ".authorize" do
+    it "creates a transaction of type 'authorize' for a given amount" do
+      token = "some_token"
+      stub_http_with_fixture('successful_authorize.xml')
+      amount = 100
+      RSpreedlyCore::Transaction.expects(:gateway_transaction).
+                                 with('authorize', amount, token)
+      RSpreedlyCore::PaymentMethod.authorize(100, token)
+    end
+  end
+  
   describe "#capture" do
     it "creates a transaction of type 'cpature' for a given authorization" do
       stub_http_with_fixture('valid_payment_method.xml')
@@ -134,6 +156,16 @@ describe RSpreedlyCore::PaymentMethod do
       RSpreedlyCore::Transaction.expects(:capture_transaction).
                                  with('capture', nil, auth_token)
       payment_method.capture(auth_token)
+    end
+  end
+  
+  describe ".capture" do
+    it "creates a transaction of type 'cpature' for a given authorization" do
+      auth_token = "some_token"
+      stub_http_with_fixture('successful_capture.xml')
+      RSpreedlyCore::Transaction.expects(:capture_transaction).
+                                 with('capture', nil, auth_token)
+      RSpreedlyCore::PaymentMethod.capture(auth_token)
     end
   end
 

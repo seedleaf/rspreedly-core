@@ -1,0 +1,12 @@
+<gateway>
+  <token>G0Ixmh1sL9lc4wuV7emb2SpwVCG</token>
+  <characteristics>
+    <supports_purchase type="boolean">true</supports_purchase>
+    <supports_authorize type="boolean">true</supports_authorize>
+    <supports_capture type="boolean">true</supports_capture>
+    <supports_credit type="boolean">true</supports_credit>
+    <supports_void type="boolean">true</supports_void>
+  </characteristics>
+  <created_at type="datetime">2011-06-03T02:50:31Z</created_at>
+  <updated_at type="datetime">2011-06-03T02:50:31Z</updated_at>
+</gateway>

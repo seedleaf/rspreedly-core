@@ -22,27 +22,38 @@ module RSpreedlyCore
     def self.retain(token)
       RSpreedlyCore::Transaction.payment_method_transaction('retain', token)
     end
-    
+
     def redact
       self.class.redact(token)
-    end 
-    
+    end
+
     def self.redact(token)
       RSpreedlyCore::Transaction.payment_method_transaction('redact', token)
     end
-    
+
     def purchase(amount)
       RSpreedlyCore::Transaction.gateway_transaction('purchase', amount, token)
     end
-    
+
+    def self.purchase(amount, token)
+      RSpreedlyCore::Transaction.gateway_transaction('purchase', amount, token)
+    end
+
     def authorize(amount)
       RSpreedlyCore::Transaction.gateway_transaction('authorize', amount, token)
     end
-    
+
+    def self.authorize(amount, token)
+      RSpreedlyCore::Transaction.gateway_transaction('authorize', amount, token)
+    end
+
     def capture(transaction_token, amount = nil)
+      self.class.capture(transaction_token, amount)
+    end
+
+    def self.capture(transaction_token, amount = nil)
       RSpreedlyCore::Transaction.capture_transaction('capture', amount, transaction_token)
     end
-      
 
     def attributes
       super do |attributes|

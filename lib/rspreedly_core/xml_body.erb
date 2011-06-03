@@ -1,0 +1,5 @@
+<<%= "#{class_name}" %>>
+<% xml_tags.each do |key, value| %>
+  <%= "<#{key}>#{value}</#{key}>" %>
+<% end %>
+</<%= "#{class_name}" %>>
